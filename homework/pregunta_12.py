@@ -22,3 +22,12 @@ def pregunta_12():
     38   38                    eee:0,fff:9,iii:2
     39   39                    ggg:3,hhh:8,jjj:5
     """
+    import pandas as pd
+
+    tbl2 = pd.read_csv('./files/input/tbl2.tsv', sep='\t')
+    tbl2['c5b'] = tbl2['c5b'].astype('string')
+    tbl2['c5'] = tbl2[['c5a', 'c5b']].agg(':'.join, axis=1)
+    tbl2.drop(['c5a', 'c5b'], axis=1, inplace=True)
+    tbl2 = tbl2.sort_values(['c0', 'c5']).groupby('c0').agg(','.join)
+    tbl2.reset_index(inplace=True)
+    return tbl2
